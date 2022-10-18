@@ -11,17 +11,36 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+import org.springframework.hateoas.EntityModel;
+
+
+
+
+import com.fasterxml.jackson.annotation.JsonFilter;
+
+
+
+
 
 //Entity
+
 // and
+
 @Entity
+
 @Table(name = "user")
-@JsonIgnoreProperties({"firstname", "lastname"})
-public class User extends RepresentationModel {
+
+//@JsonIgnoreProperties({"firstname", "lastname"})  -- Static Filtering @JsonIgnore
+
+@JsonFilter(value = "userFilter")
+
+public class User extends EntityModel {
+
+
+
 
     @Id
     @GeneratedValue
@@ -42,11 +61,20 @@ public class User extends RepresentationModel {
     private String email;
 
     @Column(name = "ROLE", length = 50, nullable = false)
+
     private String role;
 
+
+
+
     @Column(name = "SSN", length = 50, nullable = false, unique = true)
-    @JsonIgnore
+
+    //@JsonIgnore -- Static Filtering @JsonIgnore
+
     private String ssn;
+
+
+
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
